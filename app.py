@@ -12,7 +12,7 @@ st.set_page_config(
 # 2. Load Model
 @st.cache_resource
 def load_model():
-    return joblib.load('model_dropout.pkl')
+    return joblib.load('model_do_prediction.pkl')
 
 try:
     model = load_model()
