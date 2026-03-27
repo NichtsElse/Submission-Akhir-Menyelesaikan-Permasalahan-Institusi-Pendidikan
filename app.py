@@ -13,7 +13,7 @@ st.set_page_config(
 @st.cache_resource
 def load_model():
     # Pastikan nama file sesuai dengan file .pkl Anda
-    return joblib.load('model/model_do_prediction.pkl.pkl')
+    return joblib.load('model/model_do_prediction.pkl')
 
 try:
     model = load_model()
