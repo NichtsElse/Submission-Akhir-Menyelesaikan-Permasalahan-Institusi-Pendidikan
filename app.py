@@ -21,7 +21,6 @@ except Exception as e:
     st.stop()
 
 # 3. Kamus Data (Mapping)
-# Dictionary ini digunakan untuk mengubah angka menjadi teks yang mudah dibaca di UI
 marital_map = {
     1: "Single (Belum Menikah)", 
     2: "Married (Menikah)", 
@@ -31,7 +30,6 @@ marital_map = {
     6: "Legally Separated (Berpisah Hukum)"
 }
 
-# Mapping untuk Application Mode (Beberapa jalur umum dari dataset asli)
 app_mode_map = {
     1: "1st phase - general contingent",
     15: "International student (Mahasiswa Internasional)",
@@ -40,7 +38,6 @@ app_mode_map = {
     43: "Transfer student (Mahasiswa Pindahan)",
     44: "Technological specialization diploma",
     51: "Change of course (Pindah Jurusan)"
-    # Jika ada angka lain di luar ini, kita tangani dengan fallback di format_func
 }
 
 yes_no_map = {1: "Ya", 0: "Tidak"}
@@ -76,15 +73,13 @@ with tab1:
 with tab2:
     st.subheader("Riwayat Pendaftaran")
     
-    # Karena Application Mode ada banyak, kita beri opsi umum dan membiarkan user input jika tidak ada
-    opsi_app_mode = list(app_mode_map.keys()) + [0] # 0 sebagai opsi 'Lainnya'
+    opsi_app_mode = list(app_mode_map.keys()) + [0]
     app_mode_select = st.selectbox(
         "Application Mode (Jalur Masuk)", 
         options=opsi_app_mode, 
         format_func=lambda x: app_mode_map.get(x, "Jalur Lainnya (Input Manual)")
     )
     
-    # Jika memilih lainnya, munculkan input angka manual
     if app_mode_select == 0:
         app_mode = st.number_input("Masukkan Kode Jalur Masuk:", min_value=1, value=1)
     else:
@@ -116,15 +111,16 @@ with tab4:
     with col2:
         s1_grade = st.number_input("Curricular Units 1st Sem Grade (Rata-rata Nilai/IP)", value=12.0, step=0.1, min_value=0.0)
 
-# Kategori 5: Kinerja Semester 2
+# Kategori 5: Kinerja Semester 2 (Diperbaiki: Menambahkan variabel yang kurang)
 with tab5:
     st.subheader("Performa Akademik - Semester 2")
     col1, col2 = st.columns(2)
     with col1:
         s2_enrolled = st.number_input("Curricular Units 2nd Sem Enrolled (SKS Diambil)", value=6, min_value=0)
-        s2_approved = st.number_input("Curricular Units 2nd Sem Approved (SKS Lulus)", value=5, min_value=0)
+        s2_eval = st.number_input("Curricular Units 2nd Sem Evaluations", value=6, min_value=0)
+        s2_no_eval = st.number_input("Curricular Units 2nd Sem Without Eval", value=0, min_value=0)
     with col2:
-
+        s2_approved = st.number_input("Curricular Units 2nd Sem Approved (SKS Lulus)", value=5, min_value=0)
         s2_grade = st.number_input("Curricular Units 2nd Sem Grade (Rata-rata Nilai/IP)", value=12.0, step=0.1, min_value=0.0)
 
 st.markdown("---")
@@ -163,11 +159,11 @@ if st.button("📊 Proses Prediksi", use_container_width=True):
     st.subheader("💡 Hasil Analisis:")
     
     if prediction[0] == 1:
-        st.error(f"⚠️ **STATUS: BERISIKO TINGGI (DROPOUT)**")
+        st.error("⚠️ **STATUS: BERISIKO TINGGI (DROPOUT)**")
         st.write(f"Tingkat Keyakinan Model: **{prediction_proba[0][1]*100:.2f}%**")
         st.info("Rekomendasi: Segera jadwalkan sesi bimbingan konseling dan akademik untuk mahasiswa ini.")
     else:
-        st.success(f"✅ **STATUS: AMAN (DIPREDIKSI LULUS/GRADUATE)**")
+        st.success("✅ **STATUS: AMAN (DIPREDIKSI LULUS/GRADUATE)**")
         st.write(f"Tingkat Keyakinan Model: **{prediction_proba[0][0]*100:.2f}%**")
 
 st.markdown("---")
